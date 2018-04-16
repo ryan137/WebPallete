@@ -24,6 +24,11 @@
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#" onclick="removeel(document.getElementById('customcss'))"><span class="glyphicon glyphicon-tint" ></span> </a></li>
+                    <li><a href="#" onclick="changeWebTheme('/Content/Style1.css')" ><span class="glyphicon glyphicon-tint" style="color:blue"></span> </a></li>
+                    <li><a href="#" onclick="changeWebTheme('/Content/Style2.css')"><span class="glyphicon glyphicon-tint" style="color:yellow"></span> </a></li>
+                </ul>
             </div>
         </div>
     </div>
@@ -38,5 +43,26 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    <script>
+        function changeWebTheme(filename) {
+            var x = document.getElementById("customcss");
+            if (x !== null) {
+                removeel(x);
+            };
+            var fileref = document.createElement("link");
+            fileref.setAttribute("rel", "stylesheet");
+            fileref.setAttribute("id", "customcss");
+            fileref.setAttribute("type", "text/css");
+            fileref.setAttribute("href", filename);
+            document.getElementsByTagName("head")[0].appendChild(fileref);
+        };
+
+        function removeel(el) {
+            el.parentNode.removeChild(el);
+        }
+
+
+
+    </script>
 </body>
 </html>
