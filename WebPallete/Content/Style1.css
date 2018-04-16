@@ -1,0 +1,108 @@
+﻿/* Body css */
+
+.jumbotron{
+    background-color: #BDBDBD;
+    color: #ffffff;
+}
+
+body {
+    background-color: #F5F5F5;
+    padding-top: 50px;
+    padding-bottom: 20px;
+    color: #757575;
+}
+
+/* Navigation Bar CSS */
+.navbar {
+    background-color: #616161;
+    border-color: #616161;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+  color: #ffffff;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:focus {
+  color: #212121;
+  background-color: transparent;
+}
+
+.navbar-inverse .navbar-brand {
+  color: #ffffff;
+}
+
+.navbar-inverse .navbar-brand:hover,
+.navbar-inverse .navbar-brand:focus {
+  color: #212121;
+  background-color: transparent;
+}
+
+
+/* Button CSS */
+.btn-primary {
+  color: #F5F5F5;
+  background-color: #9E9E9E;
+  border-color: #9E9E9E;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open .dropdown-toggle.btn-primary {
+  color: #ffffff;
+  background-color: #616161;
+  border-color: #616161;
+}
+
+.btn-default {
+  color: #F5F5F5;
+  background-color: #BDBDBD;
+  border-color: #BDBDBD;
+}
+
+.btn-default:hover,
+.btn-default:focus,
+.btn-default:active,
+.btn-default.active,
+.open .dropdown-toggle.btn-default {
+  color: #F5F5F5;
+  background-color: #616161;
+  border-color: #616161;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
