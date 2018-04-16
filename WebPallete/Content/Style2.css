@@ -1,21 +1,21 @@
 ﻿/* Body css */
 
 .jumbotron{
-    background-color: #BDBDBD;
-    color: #ffffff;
+    background-color: #607D8B;
+    color: #cfd8dc;
 }
 
 body {
-    background-color: #F5F5F5;
+    background-color: #eceff1;
     padding-top: 50px;
     padding-bottom: 20px;
-    color: #757575;
+    color: #212121;
 }
 
 /* Navigation Bar CSS */
 .navbar {
-    background-color: #616161;
-    border-color: #616161;
+    background-color: #455A64;
+    border-color: #455A64;
 }
 
 .navbar-inverse .navbar-nav > li > a {
@@ -24,7 +24,7 @@ body {
 
 .navbar-inverse .navbar-nav > li > a:hover,
 .navbar-inverse .navbar-nav > li > a:focus {
-  color: #212121;
+  color: #78909c;
   background-color: transparent;
 }
 
@@ -34,16 +34,16 @@ body {
 
 .navbar-inverse .navbar-brand:hover,
 .navbar-inverse .navbar-brand:focus {
-  color: #212121;
+  color: #78909c;
   background-color: transparent;
 }
 
 
 /* Button CSS */
 .btn-primary {
-  color: #F5F5F5;
-  background-color: #9E9E9E;
-  border-color: #9E9E9E;
+  color: #37474f;
+  background-color: #CFD8DC;
+  border-color: #CFD8DC;
 }
 
 .btn-primary:hover,
@@ -51,15 +51,15 @@ body {
 .btn-primary:active,
 .btn-primary.active,
 .open .dropdown-toggle.btn-primary {
-  color: #ffffff;
-  background-color: #616161;
-  border-color: #616161;
+  color: #000000;
+  background-color: #eceff1;
+  border-color: #eceff1;
 }
 
 .btn-default {
-  color: #F5F5F5;
-  background-color: #BDBDBD;
-  border-color: #BDBDBD;
+  color: #FFFFFF;
+  background-color: #607D8B;
+  border-color: #607D8B;
 }
 
 .btn-default:hover,
@@ -68,8 +68,8 @@ body {
 .btn-default.active,
 .open .dropdown-toggle.btn-default {
   color: #F5F5F5;
-  background-color: #616161;
-  border-color: #616161;
+  background-color: #b0bec5;
+  border-color: #b0bec5;
 }
 
 
