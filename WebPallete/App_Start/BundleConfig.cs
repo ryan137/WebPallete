@@ -26,6 +26,9 @@ namespace WebPallete
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/content/bootstrap.css",
                       "~/Content/Site.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/globaljs").Include(
+                      "~/Scripts/custom/global.js"));
         }
     }
 }
