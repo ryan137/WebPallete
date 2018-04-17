@@ -23,12 +23,22 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>
+                    <a type="button" class="btn pallete-popover" data-container="body" data-toggle="popover" data-placement="bottom">
+                        <span class="glyphicon glyphicon-cog"></span> Themes    
+                    </a>
+                    </li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#" onclick="removeel(document.getElementById('customcss'))"><span class="glyphicon glyphicon-tint" ></span> </a></li>
-                    <li><a href="#" onclick="changeWebTheme('/Content/Style1.css')" ><span class="glyphicon glyphicon-tint" style="color:blue"></span> </a></li>
-                    <li><a href="#" onclick="changeWebTheme('/Content/Style2.css')"><span class="glyphicon glyphicon-tint" style="color:yellow"></span> </a></li>
-                </ul>
+
+
+                <div id="pallete-content" class="hidden">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#" onclick="removeel(document.getElementById('customcss'))"><span class="glyphicon glyphicon-tint"></span> </a></li>
+                        <li><a href="#" onclick="changeWebTheme('/Content/Style1.css')"><span class="glyphicon glyphicon-tint" style="color:blue"></span> </a></li>
+                        <li><a href="#" onclick="changeWebTheme('/Content/Style2.css')"><span class="glyphicon glyphicon-tint" style="color:yellow"></span> </a></li>
+                    </ul>
+                </div>
+
             </div>
         </div>
     </div>
@@ -44,6 +54,16 @@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
     <script>
+        (function(){
+            $(".pallete-popover").popover({
+                html: true,
+                content: function () {
+                    return $("#pallete-content").html();
+                },
+            });
+        })();
+
+        document.addEventListener('click')
         function changeWebTheme(filename) {
             var x = document.getElementById("customcss");
             if (x !== null) {
