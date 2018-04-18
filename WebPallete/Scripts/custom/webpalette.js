@@ -36,6 +36,9 @@
         changeWebTheme: function (filename) {
             var x;
             x = document.getElementById(DOMstrings.customCSS);
+            if (x) {
+                removeEl(x);
+            }
             if (filename !== 'default') {
                 var fileref = document.createElement("link");
                 fileref.setAttribute("rel", "stylesheet");
@@ -44,9 +47,6 @@
                 fileref.setAttribute("href", filename);
                 document.getElementsByTagName("head")[0].appendChild(fileref);
                 setCookie('customcsspath', filename, 365);
-            }
-            else {
-                removeEl(x);
             }
 
             //console.log(getCookie('customcsspath'));
