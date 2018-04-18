@@ -77,7 +77,7 @@ var controller = (function (UICtrl) {
         if (x) {
             UICtrl.changeWebTheme(x);
         }
-    }
+    };
 
     var ctrlChangeThemes = function (event) {
         var themeID = event.target.getAttribute('data-theme');
@@ -87,12 +87,15 @@ var controller = (function (UICtrl) {
         }
     }
 
-    loadSavedTheme();
+    
     return {
         init: function () {
             console.log("App started")
+            loadSavedTheme();
             setupEventListeners();
         }
     }
 
 })(UIController);
+
+controller.init();
