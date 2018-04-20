@@ -5,9 +5,7 @@
         this.css = css;
     }
 
-    var data = {
-        allThemes: []
-    }
+    var data = [];
 
     Themes.prototype.getTheme= function(){
         return this.css;
@@ -15,22 +13,10 @@
     
     return {
         getThemesFromDB: function () {
-            $.ajax({
-                type: 'GET',
-                url: 'http://localhost:64985/Themes/GetAllThemes',
-                dataType: 'json',
-                success: function (item) {
-                    for (var i = 0; i < item.length; i++) {
-                        var themeObj = new Themes(item[i].ThemeID, item[i].ThemeName, item[i].ThemeCSS);
-                        data.allThemes.push(themeObj);
-                        console.log(data);
-                        return data;
-                    }
-                },
-                error: function (error) {
-                    console.log(error);
-                }
-            });
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "http://localhost:64985/Themes/GetAllThemes", false);
+            xhttp.send();
+            return JSON.parse(xhttp.response);
         }
     }
 })();
@@ -75,12 +61,13 @@ var UIController = (function () {
 
         displayThemes: function (themes) {
             var html;
+            // 1. Create HTML String
             for (var i = 0; i < themes.length; i++) {
-                // 1. Create HTML String
-                html = '<li><a href="#" class="glyphicon glyphicon-tint" data-theme="'+ themes[i].id +'"></a></li>';
-                // 2. Insert into DOM
-                document.querySelector(DOMstrings.themesContainer).insertAdjacentHTML('beforeend', html);
-            }
+                html += '<li><a href="#" class="glyphicon glyphicon-tint" data-theme="' + themes[i].id + '"></a></li>';
+            };
+            console.log(html);
+            // 2. Insert into DOM
+            document.querySelector(DOMstrings.themesContainer).insertAdjacentHTML('beforeend', html);
         },
 
         changeWebTheme: function (filename) {
@@ -129,7 +116,6 @@ var controller = (function (themeCtrl,UICtrl) {
     var getThemes = function () {
         // 1. Get themes from DB
         var themes = themeCtrl.getThemesFromDB();
-
         // 2. Display themes list to UI
         UICtrl.displayThemes(themes);
 
@@ -175,4 +161,5 @@ var controller = (function (themeCtrl,UICtrl) {
 
 // Initialize controller
 controller.init();
+
 
