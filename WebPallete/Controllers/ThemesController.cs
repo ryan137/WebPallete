@@ -52,7 +52,7 @@ namespace WebPallete.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ThemeName,ThemeCSS")] Theme theme)
+        public ActionResult Create([Bind(Include = "ThemeName,ThemeCSS,IconColor")] Theme theme)
         {
             if (ModelState.IsValid)
             {
@@ -84,7 +84,7 @@ namespace WebPallete.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ThemeID,ThemeName,ThemeCSS")] Theme theme)
+        public ActionResult Edit([Bind(Include = "ThemeID,ThemeName,ThemeCSS,IconColor")] Theme theme)
         {
             if (ModelState.IsValid)
             {

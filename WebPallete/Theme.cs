@@ -17,5 +17,6 @@ namespace WebPallete
         public int ThemeID { get; set; }
         public string ThemeName { get; set; }
         public string ThemeCSS { get; set; }
+        public string IconColor { get; set; }
     }
 }

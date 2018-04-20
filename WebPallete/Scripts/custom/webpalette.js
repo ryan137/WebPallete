@@ -5,18 +5,24 @@
         this.css = css;
     }
 
-    var data = [];
-
-    Themes.prototype.getTheme= function(){
-        return this.css;
-    }
+    var data = {
+        allThemes: []
+    };
     
     return {
         getThemesFromDB: function () {
             var xhttp = new XMLHttpRequest();
             xhttp.open("GET", "http://localhost:64985/Themes/GetAllThemes", false);
             xhttp.send();
-            return JSON.parse(xhttp.response);
+            var resp = JSON.parse(xhttp.response);
+            for (var i = 0; i < resp.length; i++) {
+                data.allThemes.push(resp[i]);
+            };
+            return data;
+        },
+        getThemeCSS: function (themeid) {
+            var css = data['allThemes'].find(x => x.ThemeID == themeid).ThemeCSS
+            return css;
         }
     }
 })();
@@ -30,12 +36,6 @@ var UIController = (function () {
         themesContainer: '.themes-container'
     };
 
-    // Remove link to css and set cookies content to empty
-    var removeEl = function (el) {
-        el.parentNode.removeChild(el);
-        setCookie('customcsspath', '', -1);
-    }
-
     var setCookie = function (cname, cvalue, exdays) {
         var d = new Date();
         d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -43,7 +43,17 @@ var UIController = (function () {
         document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     };
 
+    // Remove link to css and set cookies content to empty
+    var removeEl = function (el) {
+        el.parentNode.removeChild(el);
+        setCookie('customcsspath', '', -1);
+    }
+
     return {
+        saveCookie: function(themeID){
+            setCookie('customcsspath', themeID, 365);
+        },
+
         getCookie: function (cname) {
             var name = cname + "=";
             var decodedCookie = decodeURIComponent(document.cookie);
@@ -60,40 +70,34 @@ var UIController = (function () {
         },
 
         displayThemes: function (themes) {
-            var html;
+            var html, themesLen, themeID, themeIconColor;
+            html = '';
+            themesLen = themes['allThemes'].length;
             // 1. Create HTML String
-            for (var i = 0; i < themes.length; i++) {
-                html += '<li><a href="#" class="glyphicon glyphicon-tint" data-theme="' + themes[i].id + '"></a></li>';
+            for (var i = 0; i < themesLen; i++) {
+                themeID = themes['allThemes'][i].ThemeID;
+                themeIconColor = themes['allThemes'][i].IconColor;
+                html += '<li><a href="#" class="glyphicon glyphicon-tint" data-theme="' + themeID + '" style="color:' + themeIconColor + '"></a></li>';
             };
-            console.log(html);
             // 2. Insert into DOM
             document.querySelector(DOMstrings.themesContainer).insertAdjacentHTML('beforeend', html);
         },
 
-        changeWebTheme: function (filename) {
+        changeWebTheme: function (CSSCode) {
             // 1. Check if there is css link id, if exist then remove
             var x;
             x = document.getElementById(DOMstrings.customCSS);
             if (x) {
                 removeEl(x);
             }
-
-            // 2. Request CSS code from DB using AJAX
-
-
             // 2. Create new css link in head tag if the chosen theme is not the default one and add cookies
-            if (filename !== 'default') {
-                var fileref = document.createElement("link");
-                fileref.setAttribute("rel", "stylesheet");
-                fileref.setAttribute("id", "customcss");
-                fileref.setAttribute("type", "text/css");
-                fileref.setAttribute("href", filename);
-                document.getElementsByTagName("head")[0].appendChild(fileref);
-                setCookie('customcsspath', filename, 365);
+            if (CSSCode) {
+                var styleEL = document.createElement('style');
+
+                styleEL.insertAdjacentHTML('beforeend', CSSCode);
+                styleEL.setAttribute('id', 'customcss');
+                document.getElementsByTagName("head")[0].appendChild(styleEL);
             }
-
-            //console.log(getCookie('customcsspath'));
-
             return "";
         },
 
@@ -110,7 +114,7 @@ var controller = (function (themeCtrl,UICtrl) {
         var DOM = UICtrl.getDOMstrings();
 
         // Set event listener to html body
-        document.querySelector(DOM.body).addEventListener('click', ctrlChangeThemes);
+        document.querySelector(DOM.body).addEventListener('click', ctrlCheckEventID);
     };
 
     var getThemes = function () {
@@ -124,22 +128,29 @@ var controller = (function (themeCtrl,UICtrl) {
     var loadSavedTheme = function () {
         // 1. Get Cookie
         var x = UICtrl.getCookie('customcsspath');
-
         // 2. Change web theme if cookie exist
         if (x) {
-            UICtrl.changeWebTheme(x);
+            ctrlChangeThemes(x);
         }
     };
 
-    var ctrlChangeThemes = function (event) {
-        
+    var ctrlCheckEventID = function (event) {
         // 1.Check if there is data-theme attribute in event target
         var themeID = event.target.getAttribute('data-theme');
-
-        // 2.If data-theme exist then change theme 
         if (themeID) {
-            UICtrl.changeWebTheme(themeID);
+            // 2.Change web themes
+            ctrlChangeThemes(themeID);
         }
+    }
+
+    var ctrlChangeThemes = function (themeID) {
+
+        // 1. Get CSS Code
+        var themeCSS = themeController.getThemeCSS(themeID);
+        // 2. Change theme using CSS code
+        UICtrl.changeWebTheme(themeCSS);
+        // 3. Set cookie
+        UICtrl.saveCookie(themeID);
     }
 
     
@@ -148,11 +159,13 @@ var controller = (function (themeCtrl,UICtrl) {
             // 1. Show that controller is running
             console.log("App started")
 
-            // 2. Get cookies
-            loadSavedTheme();
+            // 2. Get Themes from DB
             getThemes();
 
-            // 3. Set event listener
+            // 3. Get cookies
+            loadSavedTheme();
+
+            // 4. Set event listener
             setupEventListeners();
         }
     }
