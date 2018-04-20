@@ -1,10 +1,50 @@
-﻿var UIController = (function () {
+﻿var themeController = (function () {
+    var Themes = function(id,name,css){
+        this.id = id;
+        this.name = name;
+        this.css = css;
+    }
 
+    var data = {
+        allThemes: []
+    }
+
+    Themes.prototype.getTheme= function(){
+        return this.css;
+    }
+    
+    return {
+        getThemesFromDB: function () {
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:64985/Themes/GetAllThemes',
+                dataType: 'json',
+                success: function (item) {
+                    for (var i = 0; i < item.length; i++) {
+                        var themeObj = new Themes(item[i].ThemeID, item[i].ThemeName, item[i].ThemeCSS);
+                        data.allThemes.push(themeObj);
+                        console.log(data);
+                        return data;
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+    }
+})();
+
+var UIController = (function () {
+
+    // Set DOM names
     var DOMstrings = {
-        container: 'body',
-        customCSS: 'customcss'
+        body: 'body',
+        customCSS: 'customcss',
+        themesContainer: '.themes-container'
     };
 
+    // Remove link to css and set cookies content to empty
     var removeEl = function (el) {
         el.parentNode.removeChild(el);
         setCookie('customcsspath', '', -1);
@@ -33,12 +73,28 @@
             }
         },
 
+        displayThemes: function (themes) {
+            var html;
+            for (var i = 0; i < themes.length; i++) {
+                // 1. Create HTML String
+                html = '<li><a href="#" class="glyphicon glyphicon-tint" data-theme="'+ themes[i].id +'"></a></li>';
+                // 2. Insert into DOM
+                document.querySelector(DOMstrings.themesContainer).insertAdjacentHTML('beforeend', html);
+            }
+        },
+
         changeWebTheme: function (filename) {
+            // 1. Check if there is css link id, if exist then remove
             var x;
             x = document.getElementById(DOMstrings.customCSS);
             if (x) {
                 removeEl(x);
             }
+
+            // 2. Request CSS code from DB using AJAX
+
+
+            // 2. Create new css link in head tag if the chosen theme is not the default one and add cookies
             if (filename !== 'default') {
                 var fileref = document.createElement("link");
                 fileref.setAttribute("rel", "stylesheet");
@@ -61,12 +117,22 @@
 })();
 
 
-var controller = (function (UICtrl) {
+var controller = (function (themeCtrl,UICtrl) {
 
     var setupEventListeners = function () {
         var DOM = UICtrl.getDOMstrings();
 
-        document.querySelector(DOM.container).addEventListener('click', ctrlChangeThemes);
+        // Set event listener to html body
+        document.querySelector(DOM.body).addEventListener('click', ctrlChangeThemes);
+    };
+
+    var getThemes = function () {
+        // 1. Get themes from DB
+        var themes = themeCtrl.getThemesFromDB();
+
+        // 2. Display themes list to UI
+        UICtrl.displayThemes(themes);
+
     };
 
     var loadSavedTheme = function () {
@@ -80,9 +146,12 @@ var controller = (function (UICtrl) {
     };
 
     var ctrlChangeThemes = function (event) {
+        
+        // 1.Check if there is data-theme attribute in event target
         var themeID = event.target.getAttribute('data-theme');
+
+        // 2.If data-theme exist then change theme 
         if (themeID) {
-            // 1. Change web theme
             UICtrl.changeWebTheme(themeID);
         }
     }
@@ -90,12 +159,20 @@ var controller = (function (UICtrl) {
     
     return {
         init: function () {
+            // 1. Show that controller is running
             console.log("App started")
+
+            // 2. Get cookies
             loadSavedTheme();
+            getThemes();
+
+            // 3. Set event listener
             setupEventListeners();
         }
     }
 
-})(UIController);
+})(themeController,UIController);
 
+// Initialize controller
 controller.init();
+

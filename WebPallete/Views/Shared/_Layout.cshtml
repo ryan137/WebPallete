@@ -12,11 +12,6 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
                 @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
@@ -25,15 +20,16 @@
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>
-                    <a type="button" class="btn pallete-popover" data-container="body" data-toggle="popover" data-placement="bottom">
+                    <a class="btn pallete-popover" data-container="body" data-toggle="popover" data-placement="bottom">
                         <span class="glyphicon glyphicon-cog"></span> Themes    
                     </a>
                     </li>
+                    <li>@Html.ActionLink("Themes List", "Index", "Themes")</li>
                 </ul>
 
 
                 <div id="pallete-content" class="hidden">
-                    <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav themes-container">
                         <li><a href="#" class="glyphicon glyphicon-tint" data-theme="default" style="color:black"></a></li>
                         <li><a href="#" class="glyphicon glyphicon-tint" data-theme="/Content/Style1.css" style="color:blue"></a></li>
                         <li><a href="#" class="glyphicon glyphicon-tint" data-theme="/Content/Style2.css" style="color:yellow"></a></li>
