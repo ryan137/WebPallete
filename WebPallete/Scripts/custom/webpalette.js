@@ -70,14 +70,12 @@ var UIController = (function () {
         },
 
         displayThemes: function (themes) {
-            var html, themesLen, themeID, themeIconColor;
+            var html, themesLen;
             html = '';
             themesLen = themes['allThemes'].length;
             // 1. Create HTML String
             for (var i = 0; i < themesLen; i++) {
-                themeID = themes['allThemes'][i].ThemeID;
-                themeIconColor = themes['allThemes'][i].IconColor;
-                html += '<li><a href="#" class="glyphicon glyphicon-tint" data-theme="' + themeID + '" style="color:' + themeIconColor + '"></a></li>';
+                html += '<li><a href="#" title="' + themes['allThemes'][i].ThemeName + '" class="glyphicon glyphicon-tint" data-theme="' + themes['allThemes'][i].ThemeID + '" style="color:' + themes['allThemes'][i].IconColor + '"></a></li>';
             };
             // 2. Insert into DOM
             document.querySelector(DOMstrings.themesContainer).insertAdjacentHTML('beforeend', html);
